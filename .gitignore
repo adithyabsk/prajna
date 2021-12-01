@@ -76,5 +76,13 @@ node_modules/
 # Circom
 *.r1cs
 *.sym
+*.ptau
 circuits/*_js/
-
+input.json
+*.zkey
+hash_input.json
+proof.json
+public.json
+verification_key.json
+verifier.sol
+*.wtns
