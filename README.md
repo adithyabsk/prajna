@@ -60,7 +60,10 @@ Dev:
 ### Compiling the Circuit
 
 * Generate the circuit components
-  * `cd circuits; circom main.circom --r1cs --wasm --sym --c`
+  * `cd circuits; circom main.circom --r1cs --wasm --sym`
+    * `--r1cs` : output constraints in r1cs form
+    * `--wasm` : Compiles the circuit to a wasm
+    * `--sym` : Output witness in sym format
 * Generate the witness file
   * `cd main_js; node generate_witness.js main.wasm ../hash_input.json ../witness.wtns`
 * We don't need to run the powers of tau ceremony manually and can use a prior

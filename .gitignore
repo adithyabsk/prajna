@@ -72,3 +72,9 @@ artifacts
 # Custom
 .idea
 node_modules/
+
+# Circom
+*.r1cs
+*.sym
+circuits/*_js/
+
