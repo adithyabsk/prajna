@@ -1,0 +1,13 @@
+# Circom
+*.r1cs
+*.sym
+*.ptau
+*.sol
+*_js/
+*.zkey
+hash_input.json
+*_proof.json
+*_public.json
+*_vkey.json
+*.wtns
+*_calldata.dat
