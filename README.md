@@ -61,11 +61,12 @@ Dev:
 
 * Generate the circuit components
   * `cd circuits; circom main.circom --r1cs --wasm --sym`
-    * `--r1cs` : output constraints in r1cs form
-    * `--wasm` : Compiles the circuit to a wasm
-    * `--sym` : Output witness in sym format
+    * `--r1cs`: output constraints in r1cs form
+    * `--wasm`: Compiles the circuit to a wasm
+    * `--sym`: Output witness in sym format
 * Generate the witness file
   * `cd main_js; node generate_witness.js main.wasm ../hash_input.json ../witness.wtns`
+  - [ ] TODO: Add this step to the Makefile
 * We don't need to run the powers of tau ceremony manually and can use a prior
 trusted setup. This is because the ceremony is kinda a pain to set up.
   - [ ] TODO: In the future, I should set this up myself
@@ -78,8 +79,12 @@ size of the constraint size of sha256 (448 bits --> 293,511 constraints)
   * This takes a long time (21 minutes on my machine)
   * This file is ungodly large (21 Gb)
     - [ ] TODO this gives me a clear reason to explore other hashing functions
+  * This is sooooo much faster for pederson testing
+    * nearly instant
 * I was not able to run the zkey verification step because it seems the
 verification only works with the `groth16` prover algorithm
+* Generate the verification key
+  * `snarkjs zkey export verificationkey main_final.zkey verification_key.json`
 * Generate the proof
   * `snarkjs plonk prove main_final.zkey witness.wtns proof.json public.json`
   * This also takes an ungodly long time (20 minutes)
@@ -89,6 +94,10 @@ verification only works with the `groth16` prover algorithm
   * This is too large for the EVM according to EIP-170 the max size is 24576
   bytes
     * My contract on the other hand is 6.579 kB
+    
+* Export as smart contract
+  * `snarkjs zkey export solidityverifier main_final.zkey verifier.sol`
+  * `snarkjs zkey export soliditycalldata public.json proof.json`
 
 ### Open Questions
 

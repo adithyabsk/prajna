@@ -15,4 +15,4 @@ compile : # $(TARGET).circom
 	circom $(TARGET) $(CIRCOM_OPTIONS)
 
 clean:
-	rm -rf $(TARGET)_js/ $(TARGET).r1cs $(TARGET).sym
+	rm -rf $(TARGET_NAME)_js $(TARGET_NAME).r1cs $(TARGET_NAME).sym *.wtns
