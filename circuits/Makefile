@@ -6,14 +6,16 @@ CIRCOM_OUTPUTS = $(addprefix $(TARGET)_js/, generate_witness.js $(TARGET).wasm w
 .PHONY:
 	all
 	help
+	contract
+	inputs
 	compile
 	zkey
-	contract
+	solidity
 	witness
 	vkey
-	proof
 	generate_proof
 	calldata
+	verify
 	clean
 
 ## ----------------------------------------------------------------------
@@ -27,13 +29,22 @@ all: contract
 help:	## Show the help
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
 
+
+# Create the calldata for the above solidity smart contract from the
+# hash_input.json file.
+contract: compile zkey solidity  ## Generate a smart contract that proves the target circuit
+
+# Create the calldata for the above solidity smart contract from the
+# hash_input.json file.
+inputs: witness generate_proof calldata  ## Generate the calldata for the smart contract
+
 # Compile the circuit
 compile : $(TARGET_NAME).circom
 	circom $(TARGET_NAME).circom $(CIRCOM_OPTIONS)
 
 # Generate the zkey for the solution
-$(TARGET_NAME).zkey : compile
-	snarkjs plonk setup $(TARGET_NAME).r1cs powersOfTau28_hez_final_12.ptau \
+$(TARGET_NAME).zkey : $(TARGET_NAME).r1cs powersOfTau28_hez_final_19.ptau
+	snarkjs plonk setup $(TARGET_NAME).r1cs powersOfTau28_hez_final_19.ptau \
 $(TARGET_NAME).zkey
 # alias for the zkey step
 zkey : $(TARGET_NAME).zkey
@@ -41,14 +52,10 @@ zkey : $(TARGET_NAME).zkey
 # Generate the smart contract that will verify proofs
 $(TARGET_NAME).sol : $(TARGET_NAME).zkey
 	snarkjs zkey export solidityverifier $(TARGET_NAME).zkey $(TARGET_NAME).sol
-contract : $(TARGET_NAME).sol  ## Generate a smart contract that proves the target circuit
-
-# Create the calldata for the above solidity smart contract from the
-# hash_input.json file.
-proof: generate_proof calldata  ## Generate the calldata for the smart contract
+solidity : $(TARGET_NAME).sol
 
 # Generate the witness for the solution
-$(TARGET_NAME).wtns : compile hash_input.json
+$(TARGET_NAME).wtns : $(TARGET_NAME)_js/generate_witness.js $(TARGET_NAME)_js/main.wasm hash_input.json
 	node $(TARGET_NAME)_js/generate_witness.js $(TARGET_NAME)_js/main.wasm \
 hash_input.json $(TARGET_NAME).wtns
 witness : $(TARGET_NAME).wtns
@@ -72,6 +79,11 @@ $(TARGET_NAME)_calldata.dat : $(TARGET_NAME)_public.json $(TARGET_NAME)_proof.js
 $(TARGET_NAME)_proof.json | sed $$'s/,/\\\n/' > \
 $(TARGET_NAME)_calldata.dat
 calldata : $(TARGET_NAME)_calldata.dat
+
+# CLI proof verification
+verify: $(TARGET_NAME)_vkey.json $(TARGET_NAME)_public.json $(TARGET_NAME)_proof.json
+	snarkjs plonk verify $(TARGET_NAME)_vkey.json $(TARGET_NAME)_public.json \
+$(TARGET_NAME)_proof.json
 
 # Clean up all the generated files
 clean:
