@@ -34,6 +34,9 @@ This generates the verifier smart contract `main.sol` and its call data which is
 in the file `calldata.dat`. The calldata is derived from the `hash_input.json`
 file and the contents of this file can be changed.
 
+Note: The `hash_input.json` file is generated from a unit test in
+`test/test-circuit.js`.
+
 To verify the proof through the CLI, run the following after running the above.
 
 ```shell

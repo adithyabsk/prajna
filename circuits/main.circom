@@ -2,4 +2,17 @@ pragma circom 2.0.0;
 
 include "./circuit_lib/mimcsponge.circom";
 
-component main = MiMCSponge(1, 220, 3);
+template Main() {
+    signal input in;
+
+    component sponge = MiMCSponge(1, 220, 3);
+
+    sponge.ins[0] <== in;
+    sponge.k <== 0;
+
+    sponge.outs[0] === 4264632975107256671854880675907201010791358683799434772887991655702651363011;
+    sponge.outs[1] === 3660059504047753383613051176787340202860542808713942029782338008813492019380;
+    sponge.outs[2] === 1689025560904450430055552173089420894070040230857600744162343794238629493145;
+}
+
+component main = Main();

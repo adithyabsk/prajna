@@ -12,9 +12,6 @@
     "url": "https://github.com/adithyabsk/prajna/issues"
   },
   "homepage": "https://github.com/adithyabsk/prajna#readme",
-  "dependencies": {
-    "snarkjs": "^0.4.7"
-  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
@@ -26,5 +23,8 @@
     "hardhat": "^2.7.0",
     "hardhat-contract-sizer": "^2.1.1",
     "mocha": "^9.1.3"
+  },
+  "dependencies": {
+    "snarkjs": "^0.4.10"
   }
 }
