@@ -26,13 +26,12 @@ describe("MiMC Sponge Circuit test", function () {
     // });
 
     it("Should check hash", async () => {
-        const ckt_path = path.join(__dirname, "..", "circuits")
-        circuit = await wasm_tester(path.join(ckt_path, "main.circom"));
+        circuit = await wasm_tester(path.join(__dirname, "test_mimc.circom"));
 
         const input = {ins: [1337], k: 0}
         const w = await circuit.calculateWitness(input);
 
-        fs.writeFile(path.join(ckt_path, "hash_input.json"), JSON.stringify(input), function(err) {
+        fs.writeFile(path.join(__dirname, "..", "circuits", "hash_input.json"), JSON.stringify(input), function(err) {
             if (err) console.log(err);
         });
 
