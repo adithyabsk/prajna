@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {# Bootstrap CSS Bundle #}
+  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'prajna/css/bootstrap4-harbor.css' %}"/>
+
+  {% block head %}
+  {% endblock head %}
+</head>
+<body>
+<header>
+  <nav class="navbar bg-dark navbar-dark navbar-expand-lg text-white">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ landing_page }}">Prajna</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="id_show_nav_button">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Connect Wallet</button>
+    </div>
+  </nav>
+</header>
+<main role="main">
+  {% block landing_page %}
+    <div class="container py-4">
+
+    {% block content %}
+    {% endblock content %}
+</div>
+  {% endblock landing_page %}
+</main>
+</body>
+</html>
