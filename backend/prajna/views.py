@@ -36,3 +36,7 @@ def create_puzzle(request):
             # data["zkey"] = ""
 
         return render(request, "prajna/create-puzzle.html", data)
+
+
+def solve_puzzle(request):
+    return render(request, "prajna/solve-puzzle.html")

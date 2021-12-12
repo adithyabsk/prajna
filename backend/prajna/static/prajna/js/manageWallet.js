@@ -16,7 +16,6 @@ let selectedAccount;
  * Setup the orchestra
  */
 function init() {
-
   console.log("Initializing example");
   console.log("WalletConnectProvider is", WalletConnectProvider);
   console.log("window.web3 is", window.web3, "window.ethereum is", window.ethereum);
