@@ -69,3 +69,5 @@ bootstrap, jquery, and popper to the `_vendor` folder
   * The size for SHA256 was 21GB
 - [ ] Add zkey export functionality
 - [ ] Automate the process of publishing puzzle smart contracts
+- [ ] Move to a Next.js setup where we can persist state between pages and use
+React packages. (for wallet connect)
