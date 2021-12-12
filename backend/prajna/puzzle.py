@@ -1,6 +1,6 @@
 """Manage the creation and verification of a puzzle"""
 
-from typing import List
+from typing import List, Tuple
 from pathlib import Path
 import shutil
 import tempfile
@@ -39,10 +39,10 @@ def get_hash_values(solution: int) -> List[int]:
     return list(map(int, hash_values))
 
 
-def generate_circuit(tmp_dir, solution: int):
+def generate_circuit(tmp_dir: Path, solution: int):
     pedersen_template_path = CKT_PATH / "circuit_lib/mimcsponge.circom"
     makefile_path = CKT_PATH / "Makefile"
-    circuit_path = Path(tmp_dir) / "main.circom"
+    circuit_path = tmp_dir / "main.circom"
     ptau_path = CKT_PATH / POWERS_OF_TAU_FNAME
 
     # Get the three hash values
@@ -62,14 +62,22 @@ def generate_circuit(tmp_dir, solution: int):
 
     # make the circuit
     subprocess.run(['make'], cwd=tmp_dir)
-    import pdb; pdb.set_trace()
-    return circuit_path
 
 
-def create_puzzle(solution):
+def get_solidity_verifier(solution: int) -> Tuple[str, bytes]:
     with tempfile.TemporaryDirectory() as tmp_dir:
-        ckt_path = generate_circuit(tmp_dir, solution)
+        generate_circuit(Path(tmp_dir), solution)
+        sol_path = Path(tmp_dir) / "main.sol"
+        with open(sol_path, 'r') as sol_file:
+            sol_data = sol_file.read()
+        zkey_path = Path(tmp_dir) / "main.zkey"
+        with open(zkey_path, 'rb') as zkey_file:
+            zkey_data = zkey_file.read()
+
+    return sol_data, zkey_data
 
 
 if __name__ == "__main__":
-    create_puzzle(1337)
+    sol, _ = get_solidity_verifier(1337)
+    with open("tmp_sol.sol", "w") as fopen:
+        fopen.write(sol)

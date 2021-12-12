@@ -44,14 +44,14 @@ compile : $(TARGET_NAME).circom
 
 # Generate the zkey for the solution
 $(TARGET_NAME).zkey : $(TARGET_NAME).r1cs powersOfTau28_hez_final_19.ptau
-	snarkjs plonk setup $(TARGET_NAME).r1cs powersOfTau28_hez_final_19.ptau \
+	npx snarkjs plonk setup $(TARGET_NAME).r1cs powersOfTau28_hez_final_19.ptau \
 $(TARGET_NAME).zkey
 # alias for the zkey step
 zkey : $(TARGET_NAME).zkey
 
 # Generate the smart contract that will verify proofs
 $(TARGET_NAME).sol : $(TARGET_NAME).zkey
-	snarkjs zkey export solidityverifier $(TARGET_NAME).zkey $(TARGET_NAME).sol
+	npx snarkjs zkey export solidityverifier $(TARGET_NAME).zkey $(TARGET_NAME).sol
 solidity : $(TARGET_NAME).sol
 
 # Generate the witness for the solution
@@ -62,12 +62,12 @@ witness : $(TARGET_NAME).wtns
 
 # Export the zkey to a json verification key
 $(TARGET_NAME)_vkey.json : $(TARGET_NAME).zkey
-	snarkjs zkey export verificationkey $(TARGET_NAME).zkey $(TARGET_NAME)_vkey.json
+	npx snarkjs zkey export verificationkey $(TARGET_NAME).zkey $(TARGET_NAME)_vkey.json
 vkey : $(TARGET_NAME)_vkey.json
 
 # Generate the proof and the public output (JSON files)
 generate_proof : $(TARGET_NAME)_vkey.json $(TARGET_NAME).wtns
-	snarkjs plonk prove $(TARGET_NAME).zkey $(TARGET_NAME).wtns \
+	npx snarkjs plonk prove $(TARGET_NAME).zkey $(TARGET_NAME).wtns \
 $(TARGET_NAME)_proof.json $(TARGET_NAME)_public.json
 
 # Generate the solidity call data information. The first line the bytecode of
@@ -75,14 +75,14 @@ $(TARGET_NAME)_proof.json $(TARGET_NAME)_public.json
 # comma into a newline. Note the extra dollar sign is to escape it in the
 # Makefile
 $(TARGET_NAME)_calldata.dat : $(TARGET_NAME)_public.json $(TARGET_NAME)_proof.json
-	snarkjs zkey export soliditycalldata $(TARGET_NAME)_public.json \
+	npx snarkjs zkey export soliditycalldata $(TARGET_NAME)_public.json \
 $(TARGET_NAME)_proof.json | sed $$'s/,/\\\n/' > \
 $(TARGET_NAME)_calldata.dat
 calldata : $(TARGET_NAME)_calldata.dat
 
 # CLI proof verification
 verify: $(TARGET_NAME)_vkey.json $(TARGET_NAME)_public.json $(TARGET_NAME)_proof.json
-	snarkjs plonk verify $(TARGET_NAME)_vkey.json $(TARGET_NAME)_public.json \
+	npx snarkjs plonk verify $(TARGET_NAME)_vkey.json $(TARGET_NAME)_public.json \
 $(TARGET_NAME)_proof.json
 
 # Clean up all the generated files

@@ -1,0 +1,91 @@
+{% extends 'prajna/base.html' %}
+{% load static %}
+
+{% block head %}
+  <title>Prajna: Create Puzzle</title>
+{% endblock head %}
+
+{% block content %}
+  <div class="d-flex flex-column">
+    <div class="p-2">
+      <form  method="post" action="{% url 'create-puzzle' %}">
+        <div class="form-group">
+        {% csrf_token %}
+        <label for="puzzleSolutionInput">Puzzle Solution</label>
+        <input type="number" class="form-control mb-2 {{ form.errors|yesno:"is-invalid," }}"
+               name="number" id="puzzleSolutionInput" aria-describedby="numberFeedback"
+               required value="{{ form.number.value|default_if_none:'' }}" >
+        {% if form.errors %}
+          <div class="invalid-feedback" id="numberFeedback">
+            {{ form.errors }}
+          </div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary mb-4">Submit</button>
+        </div>
+      </form>
+    </div>
+    {% if solidity_code is not None %}
+    <div class="p-2">
+      <h3>Solidity Code</h3>
+      <form>
+        <textarea class="form-control mb-3" type="text" id="solidityCode" rows="6">
+{{ solidity_code }}
+        </textarea>
+        <button class="btn btn-primary" type="button" id="copySolBtn"
+                data-toggle="tooltip" data-html="true" data-placement="bottom"
+                title="Copy to Clipboard">
+          Copy
+        </button>
+      </form>
+    </div>
+{# TODO: Enable ZKey file download #}
+{#    <div class="p-2">#}
+{#      <h3>ZKey</h3>#}
+{#      <form>#}
+{#        <textarea class="form-control mb-3" type="text" id="zkey" rows="6">#}
+{#{{ zkey }}#}
+{#        </textarea>#}
+{#        <button class="btn btn-primary" type="button" id="copyZKeyBtn"#}
+{#                data-toggle="tooltip" data-html="true" data-placement="bottom"#}
+{#                title="Copy to Clipboard">#}
+{#          Copy#}
+{#        </button>#}
+{#      </form>#}
+{#    </div>#}
+    {% endif %}
+  </div>
+  <script>
+      $(document).ready(function () {
+          function setupCopyButton(textAreaId, btnId) {
+            // Initialize the tooltip.
+            $(btnId).tooltip();
+            $(btnId).bind('click', function () {
+                let input = document.querySelector(textAreaId);
+                input.select();
+                console.log("test")
+                try {
+                    let success = document.execCommand('copy');
+                    if (success) {
+                        $(btnId).trigger('copied', ['Copied!']);
+                    } else {
+                        $(btnId).trigger('copied', ['Copy with Ctrl-c']);
+                    }
+                } catch (err) {
+                    $(btnId).trigger('copied', ['Copy with Ctrl-c']);
+                }
+            });
+
+            // Handler for updating the tooltip message.
+            $(btnId).bind('copied', function (event, message) {
+                $(this).attr('title', message)
+                    .tooltip('_fixTitle')
+                    .tooltip('show')
+                    .attr('title', "Copy to Clipboard")
+                    .tooltip('_fixTitle');
+            });
+          }
+          setupCopyButton('#solidityCode', '#copySolBtn');
+          {#setupCopyButton('#zkey', '#copyZKeyBtn');#}
+      });
+  </script>
+{% endblock content %}

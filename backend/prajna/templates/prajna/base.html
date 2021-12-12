@@ -1,37 +1,54 @@
 {% load static %}
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   {# Bootstrap CSS Bundle #}
-  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+  {#<link rel="stylesheet" href="{% static 'bootstrap.min.css' %}"/>#}
+  {#<script src="{% static 'jquery.min.js' %}"></script>#}
+  {#<script src="{% static 'popper.min.js' %}"></script>#}
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
   <link rel="stylesheet" type="text/css" href="{% static 'prajna/css/bootstrap4-harbor.css' %}"/>
 
   {% block head %}
   {% endblock head %}
 </head>
-<body>
+<body class="h-100">
 <header>
   <nav class="navbar bg-dark navbar-dark navbar-expand-lg text-white">
     <div class="container-fluid">
+
+      {% url "landing-page" as landing_page %}
+      {% url "create-puzzle" as create_puzzle %}
+      {# TODO: Create a simple template tag to process button active state #}
+      {#       (alt--consider doing this in JS) #}
       <a class="navbar-brand" href="{{ landing_page }}">Prajna</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="id_show_nav_button">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Solve</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if create_puzzle in request.path %}active{% endif %}"
+               href="{{ create_puzzle }}" id="id">Submit</a>
+          </li>
+        </ul>
+      </div>
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Connect Wallet</button>
     </div>
   </nav>
 </header>
-<main role="main">
+<main role="main" class="h-100">
   {% block landing_page %}
-    <div class="container py-4">
-
+  <div class="container py-4">
     {% block content %}
     {% endblock content %}
-</div>
+  </div>
   {% endblock landing_page %}
 </main>
 </body>

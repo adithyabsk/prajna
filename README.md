@@ -3,22 +3,15 @@
 ## Requirements
 
 * Python: ^3.7.0
-* Node: ^14.0.0
+* Node: ^16.0.0
 
 Install python requirements
 
 ## Installation Guide
 
-### Dependencies
+## Developer Deps
 
-What do the dependencies do?
-
-Dev:
-
-* Hardhat -- ethereum development environment
-* Waffle -- TODO
-* chai --BDD / TDD framework
-* ethers -- interact with ethereum blockchain using js
+- [ ] TODO: write up reproducible dev env setup
 
 ### Compiling the Circuit
 
@@ -58,15 +51,6 @@ make calldata
 make verify
 ```
 
-### Q & A
-
-- How to run a JS cli command installed in node_modules
-  - `npx [cmd]`
-  - This searches in bin for the cmd otherwise it downloads from the package
-  into a tmp folder
-- What is the max size of an Ethereum smart contract
-  - 24.576 kB
-
 ### FAQ
 
 - What does prajna mean?
@@ -74,6 +58,14 @@ make verify
 
 ## Future Work
 
-- [ ] Set this project's own power's of tau pot file
+- [ ] There was a bug with the gulp.js task to copy the minified version of
+bootstrap, jquery, and popper to the `_vendor` folder
+  - It works when we use the CDN versions of the libraries. This likely means
+  that there either is an issue with the version that I am copying over or the
+  minified gulp copies are somehow wrong.
+- [ ] Add syntax highlighting to the solidity snippet in create-puzzle page.
+- [ ] Use this project's own power's of tau pot file
 - [ ] Figure out how to make the zkey file smaller (it's still 14MB)
   * The size for SHA256 was 21GB
+- [ ] Add zkey export functionality
+- [ ] Automate the process of publishing puzzle smart contracts
