@@ -42,14 +42,6 @@ function init() {
         infuraId: "0162f3e49e3f4632bf58417dc829f03e",
       }
     },
-
-    // fortmatic: {
-    //   package: Fortmatic,
-    //   options: {
-    //     // Mikko's TESTNET api key
-    //     key: "pk_test_391E26A3B43A3350"
-    //   }
-    // }
   };
 
   web3Modal = new Web3Modal({
@@ -59,6 +51,18 @@ function init() {
   });
 
   console.log("Web3Modal instance is", web3Modal);
+}
+
+function updateWalletConnectBtn(showConnectBtn) {
+  let conBtn = document.querySelector("#btn-connect");
+  let disBtn = document.querySelector("#btn-disconnect");
+  if (showConnectBtn) {
+    conBtn.style.display = "block";
+    disBtn.style.display = "none";
+  } else {
+    conBtn.style.display = "none";
+    disBtn.style.display = "block";
+  }
 }
 
 
@@ -114,6 +118,7 @@ async function fetchAccountData() {
   await Promise.all(rowResolvers);
 
   // Display fully loaded UI for wallet data
+  updateWalletConnectBtn(false);
   document.querySelector("#prepare").style.display = "none";
   document.querySelector("#connected").style.display = "block";
 }
@@ -131,8 +136,9 @@ async function refreshAccountData() {
   // If any current data is displayed when
   // the user is switching acounts in the wallet
   // immediate hide this data
-  document.querySelector("#connected").style.display = "none";
+  updateWalletConnectBtn(true);
   document.querySelector("#prepare").style.display = "block";
+  document.querySelector("#connected").style.display = "none";
 
   // Disable button while UI is loading.
   // fetchAccountData() will take a while as it communicates
@@ -197,6 +203,7 @@ async function onDisconnect() {
   selectedAccount = null;
 
   // Set the UI back to the initial state
+  updateWalletConnectBtn(true);
   document.querySelector("#prepare").style.display = "block";
   document.querySelector("#connected").style.display = "none";
 }
