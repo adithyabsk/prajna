@@ -61,23 +61,7 @@ def generate_circuit(tmp_dir: Path, solution: int):
     shutil.copy(ptau_path, tmp_dir)
 
     # make the circuit
-    subprocess.run(['make'], cwd=tmp_dir)
-
-
-def get_solidity_verifier(solution: int) -> Tuple[str, bytes]:
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        generate_circuit(Path(tmp_dir), solution)
-        sol_path = Path(tmp_dir) / "main.sol"
-        with open(sol_path, 'r') as sol_file:
-            sol_data = sol_file.read()
-        zkey_path = Path(tmp_dir) / "main.zkey"
-        with open(zkey_path, 'rb') as zkey_file:
-            zkey_data = zkey_file.read()
-
-    return sol_data, zkey_data
-
-
-if __name__ == "__main__":
-    sol, _ = get_solidity_verifier(1337)
-    with open("tmp_sol.sol", "w") as fopen:
-        fopen.write(sol)
+    subprocess.run(['make', 'compile'], cwd=tmp_dir)
+    subprocess.run(['make', 'zkey'], cwd=tmp_dir)
+    subprocess.run(['make', 'solidity'], cwd=tmp_dir)
+    subprocess.run(['make', 'vkey'], cwd=tmp_dir)

@@ -1,11 +1,6 @@
 from django.shortcuts import render
-from .puzzle import get_solidity_verifier
 
-from django import forms
-
-
-class PuzzleForm(forms.Form):
-    number = forms.IntegerField()
+from .models import Puzzle, PuzzleForm
 
 
 def landing_page(request):
@@ -22,14 +17,23 @@ def create_puzzle(request):
     elif request.method == "POST":
         form = PuzzleForm(request.POST)
         data["form"] = form
+        # TODO: this just truncates the form, we need to return info to the user
+        #       if the name is greater than 30 chars, for example (so it will
+        #       always be valid) this is because we use custom html for the form
+        #       to integrate with bootstrap.
         if not form.is_valid():
             return render(request, "prajna/create-puzzle.html", data)
         try:
             # TODO: Add zkey export. The file is kinda big in the MB range so it
             #       really slows down the page load. We should provide the zkey
             #       as a download link.
-            sol_data, _ = get_solidity_verifier(form.cleaned_data["number"])
-            data["solidity_code"] = sol_data
+            puzzle = Puzzle.create_save(
+                form.cleaned_data["name"],
+                form.cleaned_data["description"],
+                form.cleaned_data["solution"]
+            )
+            with puzzle.sol.open('r') as sol_file:
+                data["solidity_code"] = sol_file.read()
             # data["zkey"] = zkey_data
         except:  # noqa: E722
             data["solidity_code"] = "Failed to generate solidity code."

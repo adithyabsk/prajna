@@ -128,3 +128,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Setup where files are saved
+# NOTE: this should be changed for prod
+MEDIA_ROOT = BASE_DIR / 'data/'
+MEDIA_URL = '/media/'

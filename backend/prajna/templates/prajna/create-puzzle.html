@@ -9,19 +9,18 @@
   <div class="d-flex flex-column">
     <div class="p-2">
       <form  method="post" action="{% url 'create-puzzle' %}">
-        <div class="form-group">
         {% csrf_token %}
-        <label for="puzzleSolutionInput">Puzzle Solution</label>
-        <input type="number" class="form-control mb-2 {{ form.errors|yesno:"is-invalid," }}"
-               name="number" id="puzzleSolutionInput" aria-describedby="numberFeedback"
-               required value="{{ form.number.value|default_if_none:'' }}" >
-        {% if form.errors %}
-          <div class="invalid-feedback" id="numberFeedback">
-            {{ form.errors }}
-          </div>
-        {% endif %}
-        <button type="submit" class="btn btn-primary mb-4">Submit</button>
+        {%for field in form %}
+        <div class="form-group">
+          <label for="puzzleSolutionInput">{{ field.label }}</label>
+          {{ field }}
+          {{ field.errors }}
         </div>
+        {% endfor %}
+        <div>
+          {{ form.errors }}
+        </div>
+        <button type="submit" class="btn btn-primary mb-4">Submit</button>
       </form>
     </div>
     {% if solidity_code is not None %}
