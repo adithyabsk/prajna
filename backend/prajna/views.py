@@ -1,7 +1,10 @@
+from collections import namedtuple
+
 from django.shortcuts import render
 
-from .models import Puzzle, PuzzleForm
+from .models import Puzzle, PuzzleSubmitForm, PuzzleChoiceForm
 
+CallData = namedtuple('CallData', ('proof', 'pubSignals'))
 
 def landing_page(request):
     return render(request, "prajna/landing.html")
@@ -10,12 +13,12 @@ def landing_page(request):
 def create_puzzle(request):
     data = {
         "solidity_code": None,
-        "form": PuzzleForm()
+        "form": PuzzleSubmitForm(),
     }
     if request.method == "GET":
         return render(request, "prajna/create-puzzle.html", data)
     elif request.method == "POST":
-        form = PuzzleForm(request.POST)
+        form = PuzzleSubmitForm(request.POST)
         data["form"] = form
         # TODO: this just truncates the form, we need to return info to the user
         #       if the name is greater than 30 chars, for example (so it will
@@ -43,4 +46,27 @@ def create_puzzle(request):
 
 
 def solve_puzzle(request):
-    return render(request, "prajna/solve-puzzle.html")
+    data = {
+        "form": PuzzleChoiceForm(),
+        "call_data": CallData("", ""),
+    }
+    if request.method == "GET":
+        return render(request, "prajna/solve-puzzle.html", data)
+    elif request.method == "POST":
+        form = PuzzleChoiceForm(request.POST)
+        data["form"] = form
+        if not form.is_valid():
+            return render(request, "prajna/create-puzzle.html", data)
+        puzzle = form.cleaned_data["choice"]
+        try:
+            call_data = puzzle.get_call_data(form.cleaned_data["solution"])
+        except ValueError:
+            form.add_error(
+                None,
+                "Unable to generate witness: solution is not valid."
+            )
+            return render(request, "prajna/solve-puzzle.html", data)
+
+        data["call_data"] = CallData(*call_data)
+
+        return render(request, "prajna/solve-puzzle.html", data)

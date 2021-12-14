@@ -12,6 +12,33 @@ let provider;
 // Address of the selected account
 let selectedAccount;
 
+let defaultABI = [
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "proof",
+                "type": "bytes"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "pubSignals",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "verifyProof",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+];
+
 /**
  * Setup the orchestra
  */
@@ -121,7 +148,6 @@ async function fetchAccountData() {
     document.querySelector("#connected").style.display = "block";
 }
 
-
 /**
  * Fetch account data for UI when
  * - User switches accounts in wallet
@@ -203,11 +229,35 @@ async function onDisconnect() {
     document.querySelector("#connected").style.display = "none";
 }
 
+function submitProof() {
+    const web3 = new Web3(provider);
+    let address = "0x4713CD263a5A9bc49D65b5850a20DC5e5fDa8413";
+    const contract = new web3.eth.Contract(defaultABI, address);
+    const proof = $('#puzzleProof').val();
+    contract.methods.verifyProof(
+        // Passed in through template script
+        proof,
+        []
+    ).call({from: selectedAccount})
+    .then((result) => {
+        if (result) {
+            $("#successProof").removeClass("d-none");
+        } else {
+            $("#failureProof").removeClass("d-none");
+        }
+    })
+}
+
 /**
  * Main entry point.
  */
 window.addEventListener('load', async () => {
+    $('.alert').on('close.bs.alert', function (event) {
+        event.preventDefault();
+        $(this).addClass('d-none');
+    });
     init();
     document.querySelector("#btn-connect").addEventListener("click", onConnect);
     document.querySelector("#btn-disconnect").addEventListener("click", onDisconnect);
+    document.querySelector("#submitProofBtn").addEventListener("click", submitProof);
 });

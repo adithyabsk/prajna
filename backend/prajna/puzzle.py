@@ -64,4 +64,3 @@ def generate_circuit(tmp_dir: Path, solution: int):
     subprocess.run(['make', 'compile'], cwd=tmp_dir)
     subprocess.run(['make', 'zkey'], cwd=tmp_dir)
     subprocess.run(['make', 'solidity'], cwd=tmp_dir)
-    subprocess.run(['make', 'vkey'], cwd=tmp_dir)

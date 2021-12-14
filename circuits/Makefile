@@ -66,7 +66,7 @@ $(TARGET_NAME)_vkey.json : $(TARGET_NAME).zkey
 vkey : $(TARGET_NAME)_vkey.json
 
 # Generate the proof and the public output (JSON files)
-generate_proof : $(TARGET_NAME)_vkey.json $(TARGET_NAME).wtns
+generate_proof : $(TARGET_NAME).zkey $(TARGET_NAME).wtns
 	npx snarkjs plonk prove $(TARGET_NAME).zkey $(TARGET_NAME).wtns \
 $(TARGET_NAME)_proof.json $(TARGET_NAME)_public.json
 

@@ -55,6 +55,12 @@ make verify
 
 - What does prajna mean?
   - It is a sanskrit term for knowledge or wisdom
+- Brute Force?
+  - Make sure the solution of your puzzle has at least 15 characters so that it
+  is difficult to brute force. 
+- String input?
+  - For now it only supports numbers but you can encode as a string as
+  `pos % 26` to get the solution.
 
 ## Future Work
 

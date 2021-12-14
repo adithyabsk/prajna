@@ -45,6 +45,49 @@
       </tr>
     </template>
   </div>
+  <div>
+      <form  method="post" action="{% url 'solve-puzzle' %}">
+        {% csrf_token %}
+        <div class="text-danger">
+        {{ form.non_field_errors }}
+        </div>
+        {% for hidden_field in form.hidden_fields %}
+          {{ hidden_field.errors }}
+          {{ hidden_field }}
+        {% endfor %}
+        {%for field in form.visible_fields %}
+        <div class="form-group">
+          <label>{{ field.label }}</label>
+          {{ field }}
+          {{ field.errors }}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary mb-4">Submit</button>
+      </form>
+      <div>
+        <h3>Call data</h3>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Proof</span>
+          </div>
+          <input type="text" class="form-control" placeholder="Proof String" aria-label="Username" aria-describedby="basic-addon1"
+          value="{{ call_data.proof }}" id="puzzleProof">
+        </div>
+        <button type="submit" class="btn btn-primary mb-4" id="submitProofBtn">Submit Proof</button>
+        <div class="alert alert-success d-none" role="alert" id="successProof">
+          <strong>Success!</strong> Your proof was accepted.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="alert alert-danger d-none" role="alert" id="failureProof">
+          <strong>Invalid!</strong> Your proof was incorrect, and was rejected.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+  </div>
 </div>
 <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
