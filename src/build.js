@@ -38,7 +38,7 @@ async function installCircom() {
             }
             console.log(`stdout: ${stdout}`);
         });
-        const buildCmd = "cd circom && cargo build --release && cargo install --path circom";
+        const buildCmd = "cd circom && cargo build --release && cargo install --path circom --root /usr/local/bin/";
         execSync(buildCmd, (error, stdout, stderr) => {
                 console.log(buildCmd);
                 if (error) {
