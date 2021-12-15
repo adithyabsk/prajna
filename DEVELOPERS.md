@@ -21,6 +21,8 @@
     * Note: the powers of tau file will be downloaded by the `build.js` script
     since heroku [runs the build process by default](https://devcenter.heroku.com/changelog-items/1557)
     for node projects.
+    * The `whitenoise` package is required since Django does not serve static
+    files by default in production. Make sure to add it.
 
 ## Local development
 
