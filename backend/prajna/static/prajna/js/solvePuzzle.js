@@ -231,21 +231,46 @@ async function onDisconnect() {
 
 function submitProof() {
     const web3 = new Web3(provider);
-    let address = "0x4713CD263a5A9bc49D65b5850a20DC5e5fDa8413";
-    const contract = new web3.eth.Contract(defaultABI, address);
+    if (typeof provider === 'undefined') {
+        $("#failureProof").find("#failureMsg").html(
+            "<strong>Error!</strong> Please connect your wallet first."
+        );
+        $("#failureProof").removeClass("d-none");
+        return;
+    }
+    let address = $('#contractAddress').val(); // "0x4713CD263a5A9bc49D65b5850a20DC5e5fDa8413";
+    let contract;
+    try {
+        contract = new web3.eth.Contract(defaultABI, address);
+    } catch (error) {
+        $("#failureProof").find("#failureMsg").html(
+            "<strong>Invalid!</strong> Your contract checksum failed, maybe it was mistyped?"
+        );
+        $("#failureProof").removeClass("d-none");
+        return;
+    }
+
     const proof = $('#puzzleProof').val();
     contract.methods.verifyProof(
         // Passed in through template script
         proof,
         []
     ).call({from: selectedAccount})
-    .then((result) => {
-        if (result) {
-            $("#successProof").removeClass("d-none");
-        } else {
-            $("#failureProof").removeClass("d-none");
-        }
-    })
+        .then((result) => {
+            if (result) {
+                $("#successProof").removeClass("d-none");
+            } else {
+                $("#failureProof").find("#failureMsg").html(
+                    "<strong>Invalid!</strong> Your proof was incorrect, and was rejected."
+                );
+                $("#failureProof").removeClass("d-none");
+            }
+        }).catch(e => {
+        $("#failureProof").find("#failureMsg").html(
+            "<strong>Invalid!</strong> Contract call failed, your contract address is likely invalid."
+        );
+        $("#failureProof").removeClass("d-none");
+    });
 }
 
 /**
