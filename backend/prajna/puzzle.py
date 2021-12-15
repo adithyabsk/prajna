@@ -61,6 +61,6 @@ def generate_circuit(tmp_dir: Path, solution: int):
     shutil.copy(ptau_path, tmp_dir)
 
     # make the circuit
-    subprocess.run(['make', 'compile'], cwd=tmp_dir)
-    subprocess.run(['make', 'zkey'], cwd=tmp_dir)
-    subprocess.run(['make', 'solidity'], cwd=tmp_dir)
+    subprocess.check_output(['make', 'compile'], cwd=tmp_dir)
+    subprocess.check_output(['make', 'zkey'], cwd=tmp_dir)
+    subprocess.check_output(['make', 'solidity'], cwd=tmp_dir)
