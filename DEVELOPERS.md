@@ -12,6 +12,9 @@
     * Add buildpacks
       * Python
       * Node
+    * Add the postgres addon (since this is a monorepo and heroku will not
+    detect that it is a django project)
+      * `heroku addons:create heroku-postgresql:hobby-dev`
 
 ## Local development
 
