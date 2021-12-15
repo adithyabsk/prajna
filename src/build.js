@@ -26,7 +26,7 @@ async function installCircom() {
         return 'already exists';
     } else {
         if (!commandExists('rustup')) {
-            const setupRustCmd = "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSfy | sh"
+            const setupRustCmd = "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y"
             execSync(setupRustCmd, (error, stdout, stderr) => {
                 console.log(clone_cmd);
                 if (error) {
