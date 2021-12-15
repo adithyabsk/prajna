@@ -11,11 +11,14 @@
       * Set `SECRET_KEY`
     * Add buildpacks
       * Python
+      * emk/rust (for circom)
       * Node
+      * The order here is important because there is a Node build script that
+      will install circom.
     * Add the postgres addon (since this is a monorepo and heroku will not
     detect that it is a django project)
       * `heroku addons:create heroku-postgresql:hobby-dev`
-    * Note: the powers of tau file will be downloaded by the `ptau.js` script
+    * Note: the powers of tau file will be downloaded by the `build.js` script
     since heroku [runs the build process by default](https://devcenter.heroku.com/changelog-items/1557)
     for node projects.
 

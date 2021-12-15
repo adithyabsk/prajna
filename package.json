@@ -19,10 +19,11 @@
   },
   "dependencies": {
     "circomlibjs": "^0.1.0",
+    "command-exists": "^1.2.9",
     "snarkjs": "^0.4.10"
   },
   "scripts": {
     "copystatic": "gulp",
-    "build": "./src/ptau.js"
+    "build": "./src/build.js"
   }
 }
