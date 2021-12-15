@@ -43,8 +43,8 @@ compile : $(TARGET_NAME).circom
 	circom $(TARGET_NAME).circom $(CIRCOM_OPTIONS)
 
 # Generate the zkey for the solution
-$(TARGET_NAME).zkey : $(TARGET_NAME).r1cs powersOfTau28_hez_final_19.ptau
-	npx snarkjs plonk setup $(TARGET_NAME).r1cs powersOfTau28_hez_final_19.ptau \
+$(TARGET_NAME).zkey : $(TARGET_NAME).r1cs powersOfTau28_hez_final_12.ptau
+	npx snarkjs plonk setup $(TARGET_NAME).r1cs powersOfTau28_hez_final_12.ptau \
 $(TARGET_NAME).zkey
 # alias for the zkey step
 zkey : $(TARGET_NAME).zkey

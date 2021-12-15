@@ -10,7 +10,7 @@ from ast import literal_eval
 FILE_PATH = Path(__file__).parent.resolve()
 CKT_PATH = (FILE_PATH / "../../circuits/").resolve()
 MIMC_SCRIPT_PATH = (FILE_PATH / "../../src/mimc.js").resolve()
-POWERS_OF_TAU_FNAME = "powersOfTau28_hez_final_19.ptau"
+POWERS_OF_TAU_FNAME = "powersOfTau28_hez_final_12.ptau"
 CIRCUIT_TEMPLATE = """
 pragma circom 2.0.0;
 

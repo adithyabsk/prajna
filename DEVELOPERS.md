@@ -15,6 +15,9 @@
     * Add the postgres addon (since this is a monorepo and heroku will not
     detect that it is a django project)
       * `heroku addons:create heroku-postgresql:hobby-dev`
+    * Note: the powers of tau file will be downloaded by the `ptau.js` script
+    since heroku [runs the build process by default](https://devcenter.heroku.com/changelog-items/1557)
+    for node projects.
 
 ## Local development
 
