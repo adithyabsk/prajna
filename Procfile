@@ -1,1 +1,1 @@
-web: gunicorn backend.wsgi --timeout 15 --keep-alive 5
+web: cd backend && gunicorn backend.wsgi --timeout 15 --keep-alive 5
