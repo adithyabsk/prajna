@@ -35,4 +35,5 @@ db.sqlite3
 db.sqlite3-journal
 # populated by gulp script
 _vendor
-data/*
+media/*
+static/*
