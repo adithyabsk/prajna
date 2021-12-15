@@ -25,6 +25,21 @@ async function installCircom() {
     if (commandExists('circom')) {
         return 'already exists';
     } else {
+        if (!commandExists('rustup')) {
+            const setupRustCmd = "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
+            execSync(setupRustCmd, (error, stdout, stderr) => {
+                console.log(clone_cmd);
+                if (error) {
+                    console.log(`error: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.log(`stderr: ${stderr}`);
+                    return;
+                }
+                console.log(`stdout: ${stdout}`);
+            });
+        }
         const clone_cmd = "git clone https://github.com/iden3/circom.git"
         execSync(clone_cmd, (error, stdout, stderr) => {
             console.log(clone_cmd);
