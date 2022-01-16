@@ -64,6 +64,18 @@ make verify
 
 ## Future Work
 
+- [ ] Switch frontend to Next.js
+- [ ] Switch backend to API based
+- [ ] Switch hashing smart contract to be an interface smart contract so that
+each new puzzle does not need to redeploy the prover / verifier setup each time
+  - This means that the circom parts of the smart contract would only prove that
+  the inputs, indeed, produce the outputs the prover is claiming. The checking
+  of the hash against the puzzle hash would happen in the "Caller" smart
+   contract.
+- [ ] Switch to using
+[The Graph sub-graphs](https://thegraph.com/docs/en/developer/create-subgraph-hosted/)
+to index the list of all puzzles.
+
 - [ ] There was a bug with the gulp.js task to copy the minified version of
 bootstrap, jquery, and popper to the `_vendor` folder
   - It works when we use the CDN versions of the libraries. This likely means
