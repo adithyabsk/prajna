@@ -1,5 +1,5 @@
 TARGET_NAME = main
-CIRCOM_OPTIONS = --r1cs --wasm --sym
+CIRCOM_OPTIONS = --wasm
 
 CIRCOM_OUTPUTS = $(addprefix $(TARGET)_js/, generate_witness.js $(TARGET).wasm witness_calculator.js)
 
