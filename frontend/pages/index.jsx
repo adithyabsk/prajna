@@ -1,9 +1,11 @@
 import Head from 'next/head'
-import SimpleLayout from '../components/layout/simple'
 
-export default function Home(initialData) {
+export default function Home() {
   return (
-    <SimpleLayout>
+    <>
+        <Head>
+            <title>Prajna</title>
+        </Head>
         <div className="p-5 mb-4 bg-light rounded-3">
             <div className="container-fluid py-5">
                 <h1 className="display-5 fw-bold">Custom jumbotron</h1>
@@ -35,6 +37,6 @@ export default function Home(initialData) {
         <footer className="pt-3 mt-4 text-muted border-top">
             © 2021
         </footer>
-    </SimpleLayout>
+    </>
   )
 }
